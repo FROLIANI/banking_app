@@ -84,7 +84,7 @@ class _PhoneRegistrationPageState
               AppTextField(
                 hint: _selectedCountry != null
                     ? "${_selectedCountry!.dialCode} 000 000 000"
-                    : "+000 000 000 000",
+                    : "Enter phone number",
                 keyboardType: TextInputType.phone,
               ),
 

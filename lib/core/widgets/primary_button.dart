@@ -6,40 +6,58 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isFullWidth;
 
+  /// ✅ animated loading
+  final bool isLoading;
+
   const PrimaryButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.isFullWidth = true,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final button = SizedBox(
-      height: 56,
+    final disabled = onPressed == null || isLoading;
+
+    final btn = AnimatedSwitcher(
+      duration: const Duration(milliseconds: 180),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeIn,
       child: ElevatedButton(
-        onPressed: onPressed,
+        key: ValueKey("btn_${disabled}_$isLoading"),
+        onPressed: disabled ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppTheme.primary,
           foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 6,
-          shadowColor: Colors.black26,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shadowColor: AppTheme.primary.withOpacity(0.25),
         ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
+        child: SizedBox(
+          height: 20,
+          child: Center(
+            child: isLoading
+                ? const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.4,
+                color: Colors.white,
+              ),
+            )
+                : Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+            ),
           ),
         ),
       ),
     );
 
-    if (!isFullWidth) return button;
-
-    return SizedBox(width: double.infinity, child: button);
+    if (!isFullWidth) return btn;
+    return SizedBox(width: double.infinity, child: btn);
   }
 }
