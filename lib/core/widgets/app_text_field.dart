@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
@@ -17,18 +16,32 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: const Color(0xFFEFF6F6),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(16),
+      shadowColor: Colors.black12,
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 15,
+          ),
+          filled: true,
+          fillColor: const Color(0xFFF2F4F7),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );

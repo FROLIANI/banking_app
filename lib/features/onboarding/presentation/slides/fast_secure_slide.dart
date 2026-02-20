@@ -1,46 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:banking/features/onboarding/presentation/widgets/onboarding_slide.dart';
 
 class FastSecureSlide extends StatelessWidget {
-  const FastSecureSlide({super.key});
+  final VoidCallback onNext;
+  final VoidCallback? onSkip;
 
-  @override
-  Widget build(BuildContext context) {
-    return const _SimpleSlide(
-      image: "assets/images/onboarding/secure.png",
-      title: "Fast & Secure",
-      description:
-          "Don't worry about 3rd Party Hacks. It is fast and secure.",
-    );
-  }
-}
-
-class _SimpleSlide extends StatelessWidget {
-  final String image;
-  final String title;
-  final String description;
-
-  const _SimpleSlide({
-    required this.image,
-    required this.title,
-    required this.description,
+  const FastSecureSlide({
+    super.key,
+    required this.onNext,
+    this.onSkip,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          const SizedBox(height: 30),
-          Expanded(
-            child: Center(child: Image.asset(image, height: 180)),
-          ),
-          Text(title, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 12),
-          Text(description, textAlign: TextAlign.center),
-          const SizedBox(height: 20),
-        ],
-      ),
+    return OnboardingSlide(
+      imageAsset: "assets/images/onboarding/secure.png",
+      title: "Fast & Secure",
+      description:
+      "Don't worry about 3rd Party Hacks. It is fast and secure.",
+      primaryButtonLabel: "Next",
+      onPrimaryPressed: onNext,
+      showSkip: true,
+      onSkip: onSkip,
     );
   }
 }

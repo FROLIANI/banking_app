@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'package:banking/app/routes.dart';
 import 'package:banking/core/widgets/page_dots.dart';
-import 'package:banking/core/widgets/primary_button.dart';
-import 'package:banking/core/widgets/text_button_link.dart';
 
 import 'package:banking/features/onboarding/presentation/slides/encrypted_slide.dart';
 import 'package:banking/features/onboarding/presentation/slides/meela_slide.dart';
@@ -23,13 +21,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   late final PageController _controller;
   int _index = 0;
 
-  final List<Widget> slides = const [
-    EncryptedSlide(),
-    MeelaSlide(),
-    EasyToUseSlide(),
-    WatchTutorialSlide(),
-    FastSecureSlide(),
-  ];
+  int get _totalSlides => 5;
+
+  bool get _isLast => _index == _totalSlides - 1;
 
   @override
   void initState() {
@@ -42,11 +36,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _controller.dispose();
     super.dispose();
   }
-
-  bool get _isLast => _index == slides.length - 1;
-
-  // Based on your UI: skip appears on slide 0, 2, 4
-  bool get _showSkip => _index == 0 || _index == 2 || _index == 4;
 
   Future<void> _goNextOrFinish() async {
     HapticFeedback.selectionClick();
@@ -62,46 +51,50 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
+  Widget _buildSlide(int i) {
+    switch (i) {
+      case 0:
+        return EncryptedSlide(onNext: _goNextOrFinish, onSkip: _goNextOrFinish);
+      case 1:
+        return MeelaSlide(onNext: _goNextOrFinish);
+      case 2:
+        return EasyToUseSlide(onNext: _goNextOrFinish, onSkip: _goNextOrFinish);
+      case 3:
+        return WatchTutorialSlide(
+          onNext: _goNextOrFinish,
+          onSignIn: () =>
+              Navigator.pushReplacementNamed(context, AppRoutes.signIn),
+        );
+      case 4:
+        return FastSecureSlide(
+            onNext: _goNextOrFinish, onSkip: _goNextOrFinish);
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // ✅ top-right skip (only on specific slides)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (_showSkip)
-                    TextButtonLink(label: "Skip", onTap: _goNextOrFinish)
-                  else
-                    const SizedBox(height: 40),
-                ],
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: _totalSlides,
+              onPageChanged: (i) => setState(() => _index = i),
+              itemBuilder: (_, i) => _buildSlide(i),
             ),
+          ),
 
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: slides.length,
-                onPageChanged: (i) => setState(() => _index = i),
-                itemBuilder: (_, i) => slides[i],
-              ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: PageDots(
+              count: _totalSlides,
+              index: _index,
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 6, bottom: 14),
-              child: PageDots(count: slides.length, index: _index),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-              child: PrimaryButton(label: "Next", onPressed: _goNextOrFinish),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
