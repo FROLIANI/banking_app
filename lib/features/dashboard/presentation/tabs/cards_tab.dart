@@ -40,7 +40,7 @@ class _CardsTabState extends State<CardsTab> {
           const SizedBox(height: 14),
 
           const MasterCardWidget(
-            holder: "Michael James",
+            holder: "Frolian Ernest",
             number: "5412 7512 3412 3456",
             validThru: "24-25",
           ),

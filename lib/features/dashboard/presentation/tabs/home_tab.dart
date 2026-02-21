@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:banking/features/dashboard/presentation/widgets/metric_card.dart';
 import 'package:banking/features/dashboard/presentation/widgets/operation_tile.dart';
+import 'package:banking/app/routes.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -37,12 +38,36 @@ class HomeTab extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              OperationTile(icon: Icons.swap_horiz_rounded, label: "Transfer", onTap: () {}),
-              OperationTile(icon: Icons.account_balance_wallet_rounded, label: "Withdraw", onTap: () {}),
-              OperationTile(icon: Icons.savings_rounded, label: "Deposit", onTap: () {}),
-              OperationTile(icon: Icons.credit_card_rounded, label: "My Cards", onTap: () {}),
-              OperationTile(icon: Icons.analytics_rounded, label: "Analytics", onTap: () {}),
-              OperationTile(icon: Icons.pie_chart_rounded, label: "Budget", onTap: () {}),
+              OperationTile(
+                icon: Icons.swap_horiz_rounded,
+                label: "Transfer",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.transfer),
+              ),
+              OperationTile(
+                icon: Icons.account_balance_wallet_rounded,
+                label: "Withdraw",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.withdraw),
+              ),
+              OperationTile(
+                icon: Icons.savings_rounded,
+                label: "Deposit",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.deposit),
+              ),
+              OperationTile(
+                icon: Icons.credit_card_rounded,
+                label: "My Cards",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.cards),
+              ),
+              OperationTile(
+                icon: Icons.analytics_rounded,
+                label: "Analytics",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.analytics),
+              ),
+              OperationTile(
+                icon: Icons.pie_chart_rounded,
+                label: "Budget",
+                onTap: () => Navigator.pushNamed(context, AppRoutes.budget),
+              ),
             ],
           ),
 
